@@ -22,48 +22,60 @@ function Login() {
 
       const data = await response.json();
 
+      console.log(data);
+
       if (data.token) {
         localStorage.setItem("token", data.token);
         navigate("/dashboard");
       } else {
         alert(data.message);
       }
-
-      console.log(data);
-
     } catch (error) {
       console.error("ERROR:", error);
-      alert("Login failed");
+      alert(error.message);
     }
   };
 
   return (
-    <div>
-      <h2>Login Page</h2>
+    <div className="container vh-100 d-flex justify-content-center align-items-center">
+      <div
+        className="card shadow p-4"
+        style={{ width: "400px" }}
+      >
+        <h2 className="text-center mb-4">
+          Student Management System
+        </h2>
 
-      <input
-        type="email"
-        placeholder="Enter Email"
-        value={email}
-        onChange={(e) => setEmail(e.target.value)}
-      />
+        <input
+          type="email"
+          className="form-control mb-3"
+          placeholder="Enter Email"
+          value={email}
+          onChange={(e) => setEmail(e.target.value)}
+        />
 
-      <br />
-      <br />
+        <input
+          type="password"
+          className="form-control mb-3"
+          placeholder="Enter Password"
+          value={password}
+          onChange={(e) => setPassword(e.target.value)}
+        />
 
-      <input
-        type="password"
-        placeholder="Enter Password"
-        value={password}
-        onChange={(e) => setPassword(e.target.value)}
-      />
+        <button
+          className="btn btn-primary w-100"
+          onClick={handleLogin}
+        >
+          Login
+        </button>
 
-      <br />
-      <br />
-
-      <button onClick={handleLogin}>
-        Login
-      </button>
+        <button
+          className="btn btn-secondary w-100 mt-2"
+          onClick={() => navigate("/register")}
+        >
+          Create Account
+        </button>
+      </div>
     </div>
   );
 }

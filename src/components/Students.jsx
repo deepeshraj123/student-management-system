@@ -6,12 +6,14 @@ function Students() {
   const [name, setName] = useState("");
   const [age, setAge] = useState("");
   const [editingId, setEditingId] = useState(null);
+
   const navigate = useNavigate();
 
-const handleLogout = () => {
-  localStorage.removeItem("token");
-  navigate("/");
-};
+  const handleLogout = () => {
+    localStorage.removeItem("token");
+    navigate("/");
+  };
+
   const fetchStudents = () => {
     fetch("http://localhost:3000/students")
       .then((response) => response.json())
@@ -112,75 +114,112 @@ const handleLogout = () => {
   };
 
   return (
-    <div>
-      <h1>Students List</h1>
+    <div className="container mt-5">
+      <div className="card shadow p-4">
 
-      <h3>
-        {editingId ? "Edit Student" : "Add Student"}
-      </h3>
+        <div className="d-flex justify-content-between align-items-center mb-4">
+          <h1>Students Management</h1>
 
-      <input
-        type="text"
-        placeholder="Enter Name"
-        value={name}
-        onChange={(e) => setName(e.target.value)}
-      />
+          <div>
+            <button
+              className="btn btn-primary me-2"
+              onClick={() => navigate("/dashboard")}
+            >
+              Dashboard
+            </button>
 
-      <br />
-      <br />
-
-      <input
-        type="number"
-        placeholder="Enter Age"
-        value={age}
-        onChange={(e) => setAge(e.target.value)}
-      />
-
-      <br />
-      <br />
-
-      {editingId ? (
-        <button onClick={updateStudent}>
-          Update Student
-        </button>
-      ) : (
-        <button onClick={addStudent}>
-          Add Student
-        </button>
-      )}
-      <br />
-
-<button onClick={handleLogout}>
-  Logout
-</button>
-
-<hr />
-
-      <hr />
-
-      {students.map((student) => (
-        <div key={student.id}>
-          <p>ID: {student.id}</p>
-          <p>Name: {student.name}</p>
-          <p>Age: {student.age}</p>
-
-          <button
-            onClick={() => editStudent(student)}
-          >
-            Edit
-          </button>
-
-          {" "}
-
-          <button
-            onClick={() => deleteStudent(student.id)}
-          >
-            Delete
-          </button>
-
-          <hr />
+            <button
+              className="btn btn-danger"
+              onClick={handleLogout}
+            >
+              Logout
+            </button>
+          </div>
         </div>
-      ))}
+
+        <h3>
+          {editingId ? "Edit Student" : "Add Student"}
+        </h3>
+
+        <div className="row mb-3">
+          <div className="col-md-5">
+            <input
+              type="text"
+              className="form-control"
+              placeholder="Enter Name"
+              value={name}
+              onChange={(e) => setName(e.target.value)}
+            />
+          </div>
+
+          <div className="col-md-3">
+            <input
+              type="number"
+              className="form-control"
+              placeholder="Enter Age"
+              value={age}
+              onChange={(e) => setAge(e.target.value)}
+            />
+          </div>
+
+          <div className="col-md-4">
+            {editingId ? (
+              <button
+                className="btn btn-warning w-100"
+                onClick={updateStudent}
+              >
+                Update Student
+              </button>
+            ) : (
+              <button
+                className="btn btn-success w-100"
+                onClick={addStudent}
+              >
+                Add Student
+              </button>
+            )}
+          </div>
+        </div>
+
+        <table className="table table-striped table-bordered">
+          <thead className="table-dark">
+            <tr>
+              <th>ID</th>
+              <th>Name</th>
+              <th>Age</th>
+              <th>Actions</th>
+            </tr>
+          </thead>
+
+          <tbody>
+            {students.map((student) => (
+              <tr key={student.id}>
+                <td>{student.id}</td>
+                <td>{student.name}</td>
+                <td>{student.age}</td>
+
+                <td>
+                  <button
+                    className="btn btn-warning btn-sm me-2"
+                    onClick={() => editStudent(student)}
+                  >
+                    Edit
+                  </button>
+
+                  <button
+                    className="btn btn-danger btn-sm"
+                    onClick={() => deleteStudent(student.id)}
+                  >
+                    Delete
+                  </button>
+                </td>
+              </tr>
+            ))}
+          </tbody>
+
+        </table>
+
+      </div>
     </div>
   );
 }
